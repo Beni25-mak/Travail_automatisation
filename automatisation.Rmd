@@ -1,0 +1,60 @@
+---
+title: "Automatisation Fichier d'Aggrégation"
+author: "Beni N."
+date: "2025-05-20"
+output: html_document
+---
+
+# Installation des packages
+
+```{r, echo=T, warning=F, message=F}
+if (!require('readxl')) install.packages('redxl'); library(readxl) 
+if (!require('writexl')) install.packages('writexl'); library(writexl) 
+if (!require("lubridate")) install.packages("lubridate");library(lubridate) 
+if (!require("stringr")) install.packages("stringr");library(stringr)
+if (!require("dplyr")) install.packages("dplyr");library(dplyr)
+if (!require("data.table")) install.packages("data.table");library(data.table)
+if (!require("remotes")) install.packages("remotes") ;library(remotes)
+if (!require("robotoolbox")) install.packages("robotoolbox") ;library(robotoolbox)
+if (!require("robotoolbox")) install.packages("robotoolbox") ;library(robotoolbox)
+if (!require("lubridate")) install.packages("lubridate") ;library(lubridate)
+if (!require("openxlsx")) install.packages("openxlsx") ;library(openxlsx)
+```
+
+# importation de dataset et questionnaire KOBO
+
+nous avons fait recours aux questionnaire car nous allons avoir les variables suivantes : var_kobo, label et name_kobo
+
+```{r}
+dataset <- read_excel("input/BDD dynamiques de déplacement_Kalemie_25022025.xlsm",  
+                      sheet = "Clean Data")
+questionnaire<-"input/HSM questionnaire dynamique population.xlsx"
+survey_tot <- read_excel(questionnaire, sheet = "survey")
+choices_tot <- read_excel(questionnaire, sheet = "choices")
+```
+
+# Recupération des names : name_kobo and var_kobo
+
+```{r}
+#name_kobo = survey_tot$label
+var_kobo = colnames(dataset)
+name_R = colnames(dataset)
+name_kobo = "NULL"
+data_by_ki = "NULL"
+function_agg = "NULL"
+prov_multinom = "NULL"
+prov_top3_zs = "NULL"
+contrainte = "NULL"
+condition_SL = "NULL"
+relevant_kobo = "NULL"
+```
+
+
+```{r}
+recup = data.frame(var_kobo,name_kobo,name_R, data_by_ki, function_agg,prov_multinom,prov_top3_zs,contrainte,condition_SL, relevant_kobo)
+```
+
+```{r}
+writexl::write_xlsx(recup,"input/recuperation_variables.xlsx ")
+```
+
